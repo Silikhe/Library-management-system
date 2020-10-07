@@ -62,8 +62,8 @@ class BorrowedbookController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-   
-    
+
+
     public function actionCreate()
     {
         $model = new Borrowedbook();
@@ -76,13 +76,13 @@ class BorrowedbookController extends Controller
             'model' => $model,
         ]);
     }
-    
+
     public function bookUpdate($bookId){ // this function is used to join and update the grid to current borrowed//
         $command = \Yii::$app->db->createCommand('UPDATE book SET status=1 WHERE bookId='.$bookId);
         $command->execute();
         return true;
     }
-    
+
     /**
      * Updates an existing Borrowedbook model.
      * If update is successful, the browser will be redirected to the 'view' page.
@@ -103,6 +103,22 @@ class BorrowedbookController extends Controller
         ]);
     }
 
+    public function actionBorrowedbook()
+{
+    $model = new \frontend\models\Borrowedbook();
+
+    if ($model->load(Yii::$app->request->post())) {
+        if ($model->validate()) {
+            // form inputs are valid, do something here
+            return;
+        }
+    }
+
+    return $this->render('borrowedbook', [
+        'model' => $model,
+    ]);
+}
+
     /**
      * Deletes an existing Borrowedbook model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
@@ -118,7 +134,7 @@ class BorrowedbookController extends Controller
         return $this->redirect(['index']);
     }
     public function updateAfterDelete($bookId)
-    {  
+    {
         $command = \Yii::$app->db->createCommand('UPDATE book SET status=0 WHERE bookId='.$bookId);
     $command->execute();
     return true;

@@ -74,9 +74,22 @@ $overdue = Borrowedbook::find()->where('expectedReturn > '.date('yy/m/d'))->andW
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
+            <?php if (Yii::$app->user->can('admin')){?>
         	<div style="padding-top: 20px;">
         	   <button type="button" class="btn btn-block btn-success btn-lg assignbook" style="width: 300px;"><i class="fa fa-plus" aria-hidden="true"></i> Assign a Book</button>
             </div>
+            <?php }?>
+            <?php if (Yii::$app->user->can('Librarian')){?>
+        	<div style="padding-top: 20px;">
+        	   <button type="button" class="btn btn-block btn-success btn-lg assignbook" style="width: 300px;"><i class="fa fa-plus" aria-hidden="true"></i> Assign a Book</button>
+            </div>
+            <?php }?>
+            <?php if (Yii::$app->user->can('Student')){?>
+        	<div style="padding-top: 20px;">
+        	   <button type="button" class="btn btn-block btn-success btn-lg borrowbook" style="width: 300px;"><i class="fa fa-plus" aria-hidden="true"></i> Borrow Book</button>
+            </div>
+            <?php }?>
+
             <div style="text-align: center;">
                  <h2 class="box-title"><strong>BOOK ASSIGNMENTS</strong></h2>
             </div>
@@ -92,76 +105,190 @@ $overdue = Borrowedbook::find()->where('expectedReturn > '.date('yy/m/d'))->andW
             </div>
             <!-- /.box-header -->
             <div class="box-body table-responsive no-padding">
-                <?= GridView::widget([
-                    'dataProvider' => $dataProvider,
-                    'filterModel' => $searchModel,
-                    'columns' => [
-                        ['class' => 'yii\grid\SerialColumn'],
-
-                       // 'bbId',
-                       [
-                        'attribute' => 'Student Name',
+            <?php if (Yii::$app->user->can('librarian')){?>
+            <?= GridView::widget([
+                'dataProvider' => $dataProvider,
+                'filterModel' => $searchModel,
+                'columns' => [
+                    ['class' => 'yii\grid\SerialColumn'],
+                    //'bbId',
+                    [
+                        'attribute' => 'studentId',
                         'value' => function ($dataProvider) {
-                        $studentName = Student::find()->where(['studentId'=>$dataProvider->studentId])->One();
+                        $studentName = Student::find()->where(['student'=>$dataProvider->student])->One();
                         return $studentName->fullName;
                         },
                         ],
-                     [
-                        'attribute' => 'Book Name',
-                        'value' => function ($dataProvider) {
-                        $studentName = Book::find()->where(['bookId'=>$dataProvider->bookId])->One();
-                        return $studentName->bookName;
-                        },
-                        ],
-
                         [
-                        'attribute' => 'borrowDate',
-                        'value' => function ($dataProvider) {
-                        $date = new DateTime($dataProvider->borrowDate);
-                        return $date->format('F j, Y,');
-                        },
-                        ],
-
-                        [
-                            'attribute' => 'expectedReturn',
+                            'attribute' => 'bookId',
                             'value' => function ($dataProvider) {
-                            $date = new DateTime($dataProvider->expectedReturn);
-                            return $date->format('F j, Y,');
+                            $studentName = Book::find()->where(['bookId'=>$dataProvider->bookId])->One();
+                            return $studentName->bookName;
                             },
                             ],
-
                             [
-                                'label'=>'Return Book',
-                                'format' => 'html',
+                                'attribute' => 'borrowDate',
                                 'value' => function ($dataProvider) {
-                                return '<span class="btn btn-danger">Return</span>';
+                                $date = new DateTime($dataProvider->borrowDate);
+                                return $date->format('F j, Y,');
                                 },
-
                                 ],
-
                                 [
-                                  'label'=>'Status',
-                                  'format' => 'raw',
-                                  'value' => function ($dataProvider) {
-                                      $bookStatus = Book::find()->where(['bookId'=>$dataProvider->bookId])->One();
-                                      if($bookStatus->status == 0){
-                                          $status = 'Available';
-                                      }elseif ($bookStatus->status == 1){
-                                          $status = 'Issued';
-                                      }elseif ($bookStatus->status == 2){
-                                          $status = 'Pending';
-                                      }
-                                      return '<span class="btn btn-info">'.$status.'</span>';
-                                  },
-
-                              ],
-                        //'actualReturnDate',
-
-
-                        ['class' => 'yii\grid\ActionColumn'],
-                    ],
-                ]); ?>
-
+                                    'attribute' => 'expectedreturndate',
+                                    'value' => function ($dataProvider) {
+                                    $date = new DateTime($dataProvider->expectedreturndate);
+                                    return $date->format('F j, Y,');
+                                    },
+                                    ],
+                                    'returnDate',
+                                    [
+                                        'label'=>'Return Book',
+                                        'format' => 'raw',
+                                        'value' => function ($dataProvider) {
+                                        return '<span val="'.$dataProvider->bbId.'" class="btn btn-danger returnbook">Return</span>';
+                                        },
+                                        ],
+                                        'status',
+                                        [
+                                            'label'=>'Status',
+                                            'format' => 'raw',
+                                            'value' => function ($dataProvider) {
+                                            $bookStatus = Book::find()->where(['bookId'=>$dataProvider->bookId])->One();
+                                            if($bookStatus->status == 0){
+                                                $status = 'Available';
+                                            }elseif ($bookStatus->status == 1){
+                                                $status = 'Issued';
+                                            }elseif ($bookStatus->status == 2){
+                                                $status = 'Pending';
+                                            }
+                                            return '<span class="btn btn-info">'.$status.'</span>';
+                                            },
+                                            ],
+                                            ['class' => 'yii\grid\ActionColumn'],
+                                            ],
+                                            ]); ?>
+            ) ?>
+ <?php }?>
+        <?php if (Yii::$app->user->can('admin')){?>
+            <?= GridView::widget([
+                'dataProvider' => $dataProvider,
+                'filterModel' => $searchModel,
+                'columns' => [
+                    ['class' => 'yii\grid\SerialColumn'],
+                    //'bbId',
+                    [
+                        'attribute' => 'studentId',
+                        'value' => function ($dataProvider) {
+                        $studentName = Student::find()->where(['student'=>$dataProvider->student])->One();
+                        return $studentName->fullName;
+                        },
+                        ],
+                        [
+                            'attribute' => 'bookId',
+                            'value' => function ($dataProvider) {
+                            $studentName = Book::find()->where(['bookId'=>$dataProvider->bookId])->One();
+                            return $studentName->bookName;
+                            },
+                            ],
+                            [
+                                'attribute' => 'borrowDate',
+                                'value' => function ($dataProvider) {
+                                $date = new DateTime($dataProvider->borrowDate);
+                                return $date->format('F j, Y,');
+                                },
+                                ],
+                                [
+                                    'attribute' => 'expectedreturndate',
+                                    'value' => function ($dataProvider) {
+                                    $date = new DateTime($dataProvider->expectedreturndate);
+                                    return $date->format('F j, Y,');
+                                    },
+                                    ],
+                                    'returnDate',
+                                    [
+                                        'label'=>'Return Book',
+                                        'format' => 'raw',
+                                        'value' => function ($dataProvider) {
+                                        return '<span val="'.$dataProvider->bbId.'" class="btn btn-danger returnbook">Return</span>';
+                                        },
+                                        ],
+                                        'status',
+                                        [
+                                            'label'=>'Status',
+                                            'format' => 'raw',
+                                            'value' => function ($dataProvider) {
+                                            $bookStatus = Book::find()->where(['bookId'=>$dataProvider->bookId])->One();
+                                            if($bookStatus->status == 0){
+                                                $status = 'Available';
+                                            }elseif ($bookStatus->status == 1){
+                                                $status = 'Issued';
+                                            }elseif ($bookStatus->status == 2){
+                                                $status = 'Pending';
+                                            }
+                                            return '<span class="btn btn-info">'.$status.'</span>';
+                                            },
+                                            ],
+                                            ['class' => 'yii\grid\ActionColumn'],
+                                            ],
+                                            ]); ?>
+            ) ?>
+ <?php }?>
+                <?php if (Yii::$app->user->can('student')){?>
+            <?= GridView::widget([
+                'dataProvider' => $dataProvider,
+                'filterModel' => $searchModel,
+                'columns' => [
+                    ['class' => 'yii\grid\SerialColumn'],
+                    //'bbId',
+                    [
+                        'attribute' => 'studentId',
+                        'value' => function ($dataProvider) {
+                        $studentName = Student::find()->where(['student'=>$dataProvider->student])->One();
+                        return $studentName->fullName;
+                        },
+                        ],
+                        [
+                            'attribute' => 'bookId',
+                            'value' => function ($dataProvider) {
+                            $studentName = Book::find()->where(['bookId'=>$dataProvider->bookId])->One();
+                            return $studentName->bookName;
+                            },
+                            ],
+                            [
+                                'attribute' => 'borrowDate',
+                                'value' => function ($dataProvider) {
+                                $date = new DateTime($dataProvider->borrowDate);
+                                return $date->format('F j, Y,');
+                                },
+                                ],
+                                [
+                                    'attribute' => 'expectedreturndate',
+                                    'value' => function ($dataProvider) {
+                                    $date = new DateTime($dataProvider->expectedreturndate);
+                                    return $date->format('F j, Y,');
+                                    },
+                                    ],
+                                        'status',
+                                        [
+                                            'label'=>'Status',
+                                            'format' => 'raw',
+                                            'value' => function ($dataProvider) {
+                                            $bookStatus = Book::find()->where(['bookId'=>$dataProvider->bookId])->One();
+                                            if($bookStatus->status == 0){
+                                                $status = 'Available';
+                                            }elseif ($bookStatus->status == 1){
+                                                $status = 'Issued';
+                                            }elseif ($bookStatus->status == 2){
+                                                $status = 'Pending';
+                                            }
+                                            return '<span class="btn btn-info">'.$status.'</span>';
+                                            },
+                                            ],
+                                            ['class' => 'yii\grid\ActionColumn'],
+                                            ],
+                                            ]); ?>
+            ) ?>
+ <?php }?>
             </div>
             <!-- /.box-body -->
           </div>
@@ -169,6 +296,7 @@ $overdue = Borrowedbook::find()->where('expectedReturn > '.date('yy/m/d'))->andW
         </div>
       </div>
 <?php
+
         Modal::begin([
             'header'=>'<h4>Assign A Book</h4>',
             'id'=>'assignbook',
