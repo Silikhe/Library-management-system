@@ -9,7 +9,7 @@ use frontend\models\Student;
 /* @var $this yii\web\View */
 /* @var $searchModel frontend\models\BorrowedBookSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
-$this->title = 'Valentine LMS';
+$this->title = 'Silas LMS';
 $this->params['breadcrumbs'][] = $this->title;
 
 

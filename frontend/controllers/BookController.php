@@ -68,9 +68,9 @@ class BookController extends Controller
     {
         $model = new Book();
         $bookAuthor = New BookAuthor();
-        
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            
+
             $authorId = Yii::$app->request->post()['Bookauthor']['authorId'];
             $bookId = $model->bookId;
             if($this->bookauthors($authorId,$bookId)){
@@ -85,7 +85,7 @@ class BookController extends Controller
     } */
     public function actionCreate()
     {
-        if( \Yii::$app->user->can( 'create-book' ))
+        // if( \Yii::$app->user->can( 'create-book' ))
         {
             $model = new Book();
             $bookAuthor = New BookAuthor();
@@ -102,20 +102,20 @@ class BookController extends Controller
                 'bookAuthor'=>$bookAuthor
             ]);
         }
-        else{
-            throw new ForbiddenHttpException();
-        }
+        // else{
+        //     throw new ForbiddenHttpException();
+        // }
     }
-    
+
     public function actionAddauthor()
     {
         $model = new \frontend\models\Author();
-        
+
         if ($model->load(Yii::$app->request->post())) {
             if ($model->validate() && $model->save()) {
                 return $this->redirect(['create']);}
         }
-        
+
         return $this->renderAjax('addauthor', [
             'model' => $model,
         ]);
@@ -123,7 +123,7 @@ class BookController extends Controller
     public function bookauthors($authorId,$bookId){
         $model = New BookAuthor();
         $data= array('BookAuthor'=>['bookId'=>$bookId,'authorId'=>$authorId]);
-        
+
         if($model->load($data) && $model->save()){
             return true;
         }
