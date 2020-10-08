@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use frontend\models\Book;
+use yii\bootstrap\Modal;
 use frontend\models\BorrowedBook;
 
 /* @var $this yii\web\View */
@@ -112,13 +113,22 @@ $this->params['breadcrumbs'][] = $this->title;
                         'bookName',
                         'referenceNo',
                         'publisher',
-                       /* [
-                          'label'=>'Borrow Book',
+                        [
+                          'label'=>'Return',
                           'format' => 'raw',
+
                           'value' => function ($dataProvider) {
-                          return '<span val='.$dataProvider->book_id.' class="btn btn-success requestbook">Borrow Book</span>';
-                            },
-                        ],*/
+                              $bookStatus = Book::find()->where(['bookId'=>$dataProvider->bookId])->One();
+                              if($bookStatus->status == 0){
+                                $btn = 'block';
+                              }elseif ($bookStatus->status == 1){
+                                $btn = 'none';
+                              }elseif ($bookStatus->status == 2){
+                                $btn = 'none';
+                              }
+                          return '<span  style="display:'.$btn.'" class="btn btn-warning borrowbook">Borrow</span>';
+                          },
+                          ],
                         [
                           'label'=>'Status',
                           'format' => 'raw',
@@ -145,3 +155,12 @@ $this->params['breadcrumbs'][] = $this->title;
             <!-- /.box-body -->
           </div>
    <?php }?>
+   <?php
+        Modal::begin([
+              'header'=>'<h4>Borrow Book</h4>',
+              'id'=>'borrowbook',
+              'size'=>'modal-lg'
+              ]);
+          echo "<div id='borrowbookContent'></div>";
+          Modal::end();
+        ?>

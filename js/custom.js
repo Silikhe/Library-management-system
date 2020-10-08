@@ -50,6 +50,16 @@ $('#borrowbook').modal('show')
 });
 });
 
+// $('.requestbook').click(function(e){
+// 	e.preventDefault();
+// 	var id = $(this).attr("val");
+// 	$.get('requestbook?id='+id,function(data){
+// 	$('#requestbook').modal('show')
+// 	.find('#borrowbookContent')
+// 	.html(data);
+//   });
+// });
+
 
 $('.returnbook').click(function(e){
 	e.preventDefault();
@@ -62,6 +72,8 @@ $.get('returnbook',function(data) {
 
 	});
 	});
+
+
 
 
 });
