@@ -74,7 +74,7 @@ $overdue = Borrowedbook::find()->where('expectedReturn > '.date('yy/m/d'))->andW
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-            <?php if (Yii::$app->user->can('admin')){?>
+            <?php if (Yii::$app->user->can('Admin')){?>
         	<div style="padding-top: 20px;">
         	   <button type="button" class="btn btn-block btn-success btn-lg assignbook" style="width: 300px;"><i class="fa fa-plus" aria-hidden="true"></i> Assign a Book</button>
             </div>
@@ -89,10 +89,27 @@ $overdue = Borrowedbook::find()->where('expectedReturn > '.date('yy/m/d'))->andW
         	   <button type="button" class="btn btn-block btn-success btn-lg borrowbook" style="width: 300px;"><i class="fa fa-plus" aria-hidden="true"></i> Borrow Book</button>
             </div>
             <?php }?>
-
-            <div style="text-align: center;">
-                 <h2 class="box-title"><strong>BOOK ASSIGNMENTS</strong></h2>
+            <?php if (Yii::$app->user->can('Admin')){?>
+              <div style="text-align: center;">
+                 <h2 class="box-title"><strong>BOOK ASSIGNMENT</strong></h2>
             </div>
+            <?php }?>
+
+            <?php if (Yii::$app->user->can('Librarian')){?>
+              <div style="text-align: center;">
+                 <h2 class="box-title"><strong>BOOK ASSIGNMENT</strong></h2>
+            </div>
+            <?php }?>
+
+            <?php if (Yii::$app->user->can('Student')){?>
+              <div style="text-align: center;">
+                 <h2 class="box-title"><strong>BOOKS BORROWED</strong></h2>
+            </div>
+            <?php }?>
+
+            <!-- <div style="text-align: center;">
+                 <h2 class="box-title"><strong>BOOK ASSIGNMENTS</strong></h2>
+            </div> -->
               <div class="box-tools">
                 <div class="input-group input-group-sm hidden-xs" style="width: 300px;">
                   <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
@@ -105,7 +122,7 @@ $overdue = Borrowedbook::find()->where('expectedReturn > '.date('yy/m/d'))->andW
             </div>
             <!-- /.box-header -->
             <div class="box-body table-responsive no-padding">
-            <?php if (Yii::$app->user->can('librarian')){?>
+            <?php if (Yii::$app->user->can('Admin')){?>
             <?= GridView::widget([
                 'dataProvider' => $dataProvider,
                 'filterModel' => $searchModel,
@@ -115,7 +132,7 @@ $overdue = Borrowedbook::find()->where('expectedReturn > '.date('yy/m/d'))->andW
                     [
                         'attribute' => 'studentId',
                         'value' => function ($dataProvider) {
-                        $studentName = Student::find()->where(['student'=>$dataProvider->student])->One();
+                        $studentName = Student::find()->where(['studentId'=>$dataProvider->student])->One();
                         return $studentName->fullName;
                         },
                         ],
@@ -136,7 +153,7 @@ $overdue = Borrowedbook::find()->where('expectedReturn > '.date('yy/m/d'))->andW
                                 [
                                     'attribute' => 'expectedreturndate',
                                     'value' => function ($dataProvider) {
-                                    $date = new DateTime($dataProvider->expectedreturndate);
+                                    $date = new DateTime($dataProvider->expectedReturn);
                                     return $date->format('F j, Y,');
                                     },
                                     ],
@@ -167,9 +184,8 @@ $overdue = Borrowedbook::find()->where('expectedReturn > '.date('yy/m/d'))->andW
                                             ['class' => 'yii\grid\ActionColumn'],
                                             ],
                                             ]); ?>
-            ) ?>
  <?php }?>
-        <?php if (Yii::$app->user->can('admin')){?>
+        <?php if (Yii::$app->user->can('Librarian')){?>
             <?= GridView::widget([
                 'dataProvider' => $dataProvider,
                 'filterModel' => $searchModel,
@@ -179,7 +195,7 @@ $overdue = Borrowedbook::find()->where('expectedReturn > '.date('yy/m/d'))->andW
                     [
                         'attribute' => 'studentId',
                         'value' => function ($dataProvider) {
-                        $studentName = Student::find()->where(['student'=>$dataProvider->student])->One();
+                        $studentName = Student::find()->where(['studentId'=>$dataProvider->student])->One();
                         return $studentName->fullName;
                         },
                         ],
@@ -200,7 +216,7 @@ $overdue = Borrowedbook::find()->where('expectedReturn > '.date('yy/m/d'))->andW
                                 [
                                     'attribute' => 'expectedreturndate',
                                     'value' => function ($dataProvider) {
-                                    $date = new DateTime($dataProvider->expectedreturndate);
+                                    $date = new DateTime($dataProvider->expectedReturn);
                                     return $date->format('F j, Y,');
                                     },
                                     ],
@@ -231,7 +247,6 @@ $overdue = Borrowedbook::find()->where('expectedReturn > '.date('yy/m/d'))->andW
                                             ['class' => 'yii\grid\ActionColumn'],
                                             ],
                                             ]); ?>
-            ) ?>
  <?php }?>
                 <?php if (Yii::$app->user->can('student')){?>
             <?= GridView::widget([
@@ -241,17 +256,17 @@ $overdue = Borrowedbook::find()->where('expectedReturn > '.date('yy/m/d'))->andW
                     ['class' => 'yii\grid\SerialColumn'],
                     //'bbId',
                     [
-                        'attribute' => 'studentId',
+                        'attribute' => 'bbId',
                         'value' => function ($dataProvider) {
-                        $studentName = Student::find()->where(['student'=>$dataProvider->student])->One();
-                        return $studentName->fullName;
+                        $bookName = Book::find()->where(['book'=>$dataProvider->book])->One();
+                        return $bookName->fullName;
                         },
                         ],
                         [
-                            'attribute' => 'bookId',
+                            'attribute' => 'studentName',
                             'value' => function ($dataProvider) {
-                            $studentName = Book::find()->where(['bookId'=>$dataProvider->bookId])->One();
-                            return $studentName->bookName;
+                            $bookName = Book::find()->where(['bookId'=>$dataProvider->bookId])->One();
+                            return $bookName->studentName;
                             },
                             ],
                             [
@@ -285,9 +300,8 @@ $overdue = Borrowedbook::find()->where('expectedReturn > '.date('yy/m/d'))->andW
                                             },
                                             ],
                                             ['class' => 'yii\grid\ActionColumn'],
-                                            ],
-                                            ]); ?>
-            ) ?>
+      ],
+    ]); ?>
  <?php }?>
             </div>
             <!-- /.box-body -->
@@ -306,4 +320,23 @@ $overdue = Borrowedbook::find()->where('expectedReturn > '.date('yy/m/d'))->andW
         Modal::end();
       ?>
 
+<?php
+      Modal::begin([
+            'header'=>'<h4>Borrow Book</h4>',
+            'id'=>'borrowbook',
+            'size'=>'modal-lg'
+            ]);
+        echo "<div id='borrowbookContent'></div>";
+        Modal::end();
+      ?>
+
+<?php
+      Modal::begin([
+            'header'=>'<h4>Return Book</h4>',
+            'id'=>'returnbook',
+            'size'=>'modal-lg'
+            ]);
+        echo "<div id='returnbookContent'></div>";
+        Modal::end();
+      ?>
 

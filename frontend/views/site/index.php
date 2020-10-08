@@ -81,8 +81,13 @@ $totalStudents = Student::find()->asArray()->all();
         	   <button type="button" class="btn btn-block btn-success btn-lg assignbook " style="width: 180px;"><i class="fa fa-plus" aria-hidden="true"></i> Assign Book</button> <!-- this class is used to bind with the custom.js -->
             </div>
             <div style="text-align: center;">
-
-                 <h2 class="box-title"><strong>BOOK ASSIGNMENTS</strong></h2>
+            <?php if (Yii::$app->user->can('Admin' || 'Librarian')){?>
+              <h2 class="box-title"><strong>BOOK ASSIGNMENTS</strong></h2>
+            <?php }?>
+            <?php if (Yii::$app->user->can('Student')){?>
+              <h2 class="box-title"><strong>BOOK BORROWED</strong></h2>
+            <?php }?>
+                 <!-- <h2 class="box-title"><strong>BOOK ASSIGNMENTS</strong></h2> -->
             </div>
               <div class="box-tools">
                 <div class="input-group input-group-sm hidden-xs" style="width: 300px;">
@@ -128,7 +133,7 @@ $totalStudents = Student::find()->asArray()->all();
         Modal::begin([
             'header'=>'<h4>Assign A Book</h4>',
             'id'=>'assignbook',
-            'size'=>'modal-lg'
+            'size'=>'modal-md'
             ]);
         echo "<div id='assignbookContent'></div>";
         Modal::end();
@@ -137,7 +142,7 @@ $totalStudents = Student::find()->asArray()->all();
         Modal::begin([
             'header'=>'<h4>Return Book </h4>',
             'id'=>'assignbook',
-            'size'=>'modal-lg'
+            'size'=>'modal-md'
             ]);
         echo "<div id='assignbookContent'></div>";
         Modal::end();

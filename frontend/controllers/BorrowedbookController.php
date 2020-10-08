@@ -106,6 +106,27 @@ class BorrowedbookController extends Controller
     public function actionBorrowedbook()
 {
     $model = new \frontend\models\Borrowedbook();
+    $searchModel = new BorrowedbookSearch();
+    $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+    if ($model->load(Yii::$app->request->post())) {
+        if ($model->validate()) {
+            // form inputs are valid, do something here
+            return $this ->render ('index');
+        }
+    }
+
+    return $this->renderAjax('borrowedbook', [
+        'model' => $model,
+        'dataProvider' => $dataProvider,
+    ]);
+}
+
+
+public function actionReturnbook()
+{
+    $model = new \frontend\models\Borrowedbook();
+    $searchModel = new BorrowedbookSearch();
+    $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
     if ($model->load(Yii::$app->request->post())) {
         if ($model->validate()) {
@@ -114,10 +135,13 @@ class BorrowedbookController extends Controller
         }
     }
 
-    return $this->render('borrowedbook', [
+    return $this->renderAjax('returnbook', [
         'model' => $model,
+        'dataProvider' => $dataProvider,
     ]);
 }
+
+
 
     /**
      * Deletes an existing Borrowedbook model.
@@ -127,17 +151,17 @@ class BorrowedbookController extends Controller
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)
-    {   $bookId = Borrowedbook::find()->where(['bbId'=>$id])->one();
+    {
+        $bookId = BorrowedBook::find()->where(['bbId'=>$id])->one();
         $this->findModel($id)->delete();
         $this->updateAfterDelete($bookId->bookId);
-
         return $this->redirect(['index']);
     }
-    public function updateAfterDelete($bookId)
-    {
+
+    public function updateAfterDelete($bookId){
         $command = \Yii::$app->db->createCommand('UPDATE book SET status=0 WHERE bookId='.$bookId);
-    $command->execute();
-    return true;
+        $command->execute();
+        return true;
     }
     /**
      * Finds the Borrowedbook model based on its primary key value.

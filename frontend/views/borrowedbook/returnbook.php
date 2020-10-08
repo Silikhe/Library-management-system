@@ -1,8 +1,8 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
+use yii\widgets\ActiveForm;
 use frontend\models\Student;
 use frontend\models\Book;
 use kartik\date\DatePicker;
@@ -10,20 +10,18 @@ use kartik\date\DatePicker;
 /* @var $this yii\web\View */
 /* @var $model frontend\models\Borrowedbook */
 /* @var $form ActiveForm */
-$students = ArrayHelper::map(Student::find()->all(), 'studentId', 'fullName');
-$books = ArrayHelper::map(Book::find()->all(), 'bookId', 'bookName');
+$students = ArrayHelper::map(Student::find()->all(), 'studentsId', 'fullName');
+$books = ArrayHelper::map(Book::find()->where(['status'=>0])->all(), 'bookId', 'bookName');
 ?>
-<div class="borrowedbook">
+<div class="returnbook">
 
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'studentId')->dropDownList($students,['disabled' => false]) ?>
     <?= $form->field($model, 'bookId')->dropDownList($books,['disabled' => false]) ?>
-       
-
-<?= $form->field($model, 'borrowDate')->hiddenInput(['value'=>date('yy/m/d')])->label(false) ?>
-
-        <?= $form->field($model, 'expectedReturn') ->widget(DatePicker::classname(), [
+    <?= $form->field($model, 'borrowDate')->hiddenInput(['value'=>date('yy/m/d')])->label(false) ?>
+    <?= $form->field($model, 'expectedReturnDate')->hiddenInput(['value'=>date('yy/m/d')])->label(false) ?>
+        <?= $form->field($model, 'actualReturnDate') ->widget(DatePicker::classname(), [
         'options' => ['placeholder' => ''],
         'pluginOptions' => [
             'autoclose'=>true,
@@ -31,11 +29,12 @@ $books = ArrayHelper::map(Book::find()->all(), 'bookId', 'bookName');
         ]
     ]); ?>
 
-
-
         <div class="form-group">
-            <?= Html::submitButton('Submit', ['class' => 'btn btn-primary']) ?>
+            <?= Html::submitButton('Save', ['class' => 'btn btn-primary']) ?>
         </div>
     <?php ActiveForm::end(); ?>
 
-</div><!-- borrowedbook -->
+</div>
+
+
+

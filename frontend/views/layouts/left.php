@@ -25,7 +25,7 @@
             </div>
         </form>
         <!-- /.search form -->
-        <?php if (Yii::$app->user->can('admin')){?>
+        <?php if (Yii::$app->user->can('Admin')){?>
         <?= dmstr\widgets\Menu::widget(
             [
                 'options' => ['class' => 'sidebar-menu tree', 'data-widget'=> 'tree'],
@@ -80,7 +80,7 @@
             ]
         ) ?>
    <?php }?>
-   <?php if (Yii::$app->user->can('admin')){?>
+   <?php if (Yii::$app->user->can('Librarian')){?>
         <?= dmstr\widgets\Menu::widget(
             [
                 'options' => ['class' => 'sidebar-menu tree', 'data-widget'=> 'tree'],
@@ -88,38 +88,6 @@
                     ['label' => 'DASHBOARD', 'icon' => 'home', 'url' => ['/site/index']],
                     ['label' => 'CATALOG', 'icon' => 'book', 'url' => ['/book/index']],
                     ['label' => 'STUDENTS', 'icon' => 'users', 'url' => ['/student/index']],
-
-
-                    ['label' => 'Menu Yii2', 'options' => ['class' => 'header']],
-                    ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii']],
-                    ['label' => 'Debug', 'icon' => 'dashboard', 'url' => ['/debug']],
-                    ['label' => 'Login', 'url' => ['site/login'], 'visible' => Yii::$app->user->isGuest],
-                    [
-                        'label' => 'Some tools',
-                        'icon' => 'share',
-                        'url' => '#',
-                        'items' => [
-                            ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii'],],
-                            ['label' => 'Debug', 'icon' => 'dashboard', 'url' => ['/debug'],],
-                            [
-                                'label' => 'Level One',
-                                'icon' => 'circle-o',
-                                'url' => '#',
-                                'items' => [
-                                    ['label' => 'Level Two', 'icon' => 'circle-o', 'url' => '#',],
-                                    [
-                                        'label' => 'Level Two',
-                                        'icon' => 'circle-o',
-                                        'url' => '#',
-                                        'items' => [
-                                            ['label' => 'Level Three', 'icon' => 'circle-o', 'url' => '#',],
-                                            ['label' => 'Level Three', 'icon' => 'circle-o', 'url' => '#',],
-                                        ],
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
                 ],
             ]
         ) ?>
