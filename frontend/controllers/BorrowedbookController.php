@@ -108,10 +108,10 @@ class BorrowedbookController extends Controller
     $model = new \frontend\models\Borrowedbook();
     $searchModel = new BorrowedbookSearch();
     $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-    if ($model->load(Yii::$app->request->post())) {
+    if ($model->load(Yii::$app->request->post()) && $model->save()) {
         if ($model->validate()) {
             // form inputs are valid, do something here
-            return $this ->render ('index');
+            return $this ->redirect ('index');
         }
     }
 

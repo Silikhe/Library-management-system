@@ -15,7 +15,7 @@ $books = ArrayHelper::map(Book::find()->all(), 'bookId', 'bookName');
 ?>
 <div class="borrowedbook">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['id'=>'borrowedbook']); ?>
 
     <?= $form->field($model, 'studentId')->dropDownList($students,['disabled' => false]) ?>
     <?= $form->field($model, 'bookId')->dropDownList($books,['disabled' => false]) ?>

@@ -13,7 +13,7 @@ $this->title = 'Books';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-  
+
 <?php if (Yii::$app->user->can('Admin')){?>
   <div class="box box-info">
             <div class="box-header with-border">
@@ -68,7 +68,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'columns' => [
                         ['class' => 'yii\grid\SerialColumn'],
 
-                        'bookId',
+                        // 'bookId',
                         'bookName',
                         'referenceNo',
                         'publisher',
@@ -108,10 +108,17 @@ $this->params['breadcrumbs'][] = $this->title;
                     'columns' => [
                         ['class' => 'yii\grid\SerialColumn'],
 
-                        'bookId',
+                        // 'bookId',
                         'bookName',
                         'referenceNo',
                         'publisher',
+                       /* [
+                          'label'=>'Borrow Book',
+                          'format' => 'raw',
+                          'value' => function ($dataProvider) {
+                          return '<span val='.$dataProvider->book_id.' class="btn btn-success requestbook">Borrow Book</span>';
+                            },
+                        ],*/
                         [
                           'label'=>'Status',
                           'format' => 'raw',
