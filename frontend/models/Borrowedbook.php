@@ -14,8 +14,8 @@ use Yii;
  * @property string $expectedReturn
  * @property string|null $actualReturnDate
  *
- * @property Book $book
  * @property Student $student
+ * @property Book $book
  */
 class Borrowedbook extends \yii\db\ActiveRecord
 {
@@ -36,8 +36,8 @@ class Borrowedbook extends \yii\db\ActiveRecord
             [['studentId', 'bookId', 'borrowDate', 'expectedReturn'], 'required'],
             [['studentId', 'bookId'], 'integer'],
             [['borrowDate', 'expectedReturn', 'actualReturnDate'], 'safe'],
-            [['bookId'], 'exist', 'skipOnError' => true, 'targetClass' => Book::className(), 'targetAttribute' => ['bookId' => 'bookId']],
             [['studentId'], 'exist', 'skipOnError' => true, 'targetClass' => Student::className(), 'targetAttribute' => ['studentId' => 'studentId']],
+            [['bookId'], 'exist', 'skipOnError' => true, 'targetClass' => Book::className(), 'targetAttribute' => ['bookId' => 'bookId']],
         ];
     }
 
@@ -57,16 +57,6 @@ class Borrowedbook extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[Book]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getBook()
-    {
-        return $this->hasOne(Book::className(), ['bookId' => 'bookId']);
-    }
-
-    /**
      * Gets query for [[Student]].
      *
      * @return \yii\db\ActiveQuery
@@ -74,5 +64,15 @@ class Borrowedbook extends \yii\db\ActiveRecord
     public function getStudent()
     {
         return $this->hasOne(Student::className(), ['studentId' => 'studentId']);
+    }
+
+    /**
+     * Gets query for [[Book]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getBook()
+    {
+        return $this->hasOne(Book::className(), ['bookId' => 'bookId']);
     }
 }

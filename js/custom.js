@@ -27,8 +27,9 @@ $(document).ready(function() {
 	$('.returnbook').click(function(e){
 
 			e.preventDefault();
-
-		$.get('returnbook',function(data) {
+var id = $(this).attr('val');
+// alert(id);
+		$.get('returnbook?id='+id,function(data) {
 		$('#returnbook').modal('show')
 		 		.find('#returnbookContent')
 

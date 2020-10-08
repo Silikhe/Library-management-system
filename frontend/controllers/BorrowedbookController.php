@@ -122,23 +122,18 @@ class BorrowedbookController extends Controller
 }
 
 
-public function actionReturnbook()
+public function actionReturnbook($id)
 {
-    $model = new \frontend\models\Borrowedbook();
-    $searchModel = new BorrowedbookSearch();
-    $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+    $model = $this->findModel($id);
 
-    if ($model->load(Yii::$app->request->post())) {
-        if ($model->validate()) {
-            // form inputs are valid, do something here
-            return;
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $this->updateAfterDelete($model->bookId);
+            return $this->redirect(['index']);
         }
-    }
 
-    return $this->renderAjax('returnbook', [
-        'model' => $model,
-        'dataProvider' => $dataProvider,
-    ]);
+        return $this->renderAjax('returnbook', [
+            'model' => $model,
+        ]);
 }
 
 

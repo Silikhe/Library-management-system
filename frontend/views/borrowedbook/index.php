@@ -14,9 +14,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 $totalBooks = Book::find()->asArray()->all();
-$totalBorrows = Borrowedbook::find()->asArray()->all();
+$totalBorrows = Borrowedbook::find()->where(['actualReturnDate'=>NULL])->asArray()->all();
 $totalStudents = Student::find()->asArray()->all();
 $overdue = Borrowedbook::find()->where('expectedReturn > '.date('yy/m/d'))->andWhere(['actualReturnDate'=>NULL])->asArray()->all();
+$borrowStudents = Borrowedbook::find()->asArray()->all();
 ?>
 <div class="row">
         <div class="col-md-3 col-sm-6 col-xs-12">
@@ -214,21 +215,24 @@ $overdue = Borrowedbook::find()->where('expectedReturn > '.date('yy/m/d'))->andW
                                 },
                                 ],
                                 [
-                                    'attribute' => 'expectedreturndate',
+                                    'attribute' => 'Expected Return',
                                     'value' => function ($dataProvider) {
                                     $date = new DateTime($dataProvider->expectedReturn);
                                     return $date->format('F j, Y,');
                                     },
                                     ],
-                                    'returnDate',
                                     [
-                                        'label'=>'Return Book',
+                                    'attribute' => 'returnDate',
+                                    'value'=>date('yy/m/d')
+                                    ],
+
+                                    [
+                                        'label'=>'Return',
                                         'format' => 'raw',
                                         'value' => function ($dataProvider) {
                                         return '<span val="'.$dataProvider->bbId.'" class="btn btn-danger returnbook">Return</span>';
                                         },
                                         ],
-                                        'status',
                                         [
                                             'label'=>'Status',
                                             'format' => 'raw',
@@ -262,7 +266,7 @@ $overdue = Borrowedbook::find()->where('expectedReturn > '.date('yy/m/d'))->andW
                         return $bookName->fullName;
                         },
                         ],
-                        [ 
+                        [
                             'attribute' => 'studentName',
                             'value' => function ($dataProvider) {
                             $bookName = Book::find()->where(['bookId'=>$dataProvider->bookId])->One();
