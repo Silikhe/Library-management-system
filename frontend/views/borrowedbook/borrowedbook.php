@@ -19,7 +19,7 @@ $books = ArrayHelper::map(Book::find()->all(), 'bookId', 'bookName');
 
     <?= $form->field($model, 'studentId')->dropDownList($students,['disabled' => false]) ?>
     <?= $form->field($model, 'bookId')->dropDownList($books,['disabled' => false]) ?>
-       
+
 
 <?= $form->field($model, 'borrowDate')->hiddenInput(['value'=>date('yy/m/d')])->label(false) ?>
 

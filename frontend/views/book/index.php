@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use frontend\models\Book;
+use frontend\models\BorrowedBook;
 
 /* @var $this yii\web\View */
 /* @var $searchModel frontend\models\BookSearch */
@@ -11,6 +13,7 @@ $this->title = 'Books';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+  
 <?php if (Yii::$app->user->can('Admin')){?>
   <div class="box box-info">
             <div class="box-header with-border">
@@ -69,7 +72,24 @@ $this->params['breadcrumbs'][] = $this->title;
                         'bookName',
                         'referenceNo',
                         'publisher',
-                        'status',
+                        [
+                          'label'=>'Status',
+                          'format' => 'raw',
+                          'value' => function ($dataProvider) {
+                          $bookStatus = Book::find()->where(['bookId'=>$dataProvider->bookId])->One();
+                          if($bookStatus->status == 0){
+                            $btn = 'success';
+                              $status = 'Available';
+                          }elseif ($bookStatus->status == 1){
+                            $btn = 'info';
+                              $status = 'Issued';
+                          }elseif ($bookStatus->status == 2){
+                            $btn = 'warning';
+                              $status = 'Pending';
+                          }
+                          return '<span class="btn btn-'.$btn.'">'.$status.'</span>';
+                          },
+                          ],
                         ['class' => 'yii\grid\ActionColumn'],
                     ],
                 ]); ?>
@@ -92,7 +112,25 @@ $this->params['breadcrumbs'][] = $this->title;
                         'bookName',
                         'referenceNo',
                         'publisher',
-                        'status',
+                        [
+                          'label'=>'Status',
+                          'format' => 'raw',
+                          'value' => function ($dataProvider) {
+                          $bookStatus = Book::find()->where(['bookId'=>$dataProvider->bookId])->One();
+                          if($bookStatus->status == 0){
+                            $btn = 'success';
+                              $status = 'Available';
+                          }elseif ($bookStatus->status == 1){
+                            $btn = 'info';
+                              $status = 'Issued';
+                          }elseif ($bookStatus->status == 2){
+                            $btn = 'warning';
+                              $status = 'Pending';
+                          }
+                          return '<span class="btn btn-'.$btn.'">'.$status.'</span>';
+                          },
+                          ],
+
                         // ['class' => 'yii\grid\ActionColumn'],
                     ],
                 ]); ?>

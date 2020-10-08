@@ -28,7 +28,7 @@ $books = ArrayHelper::map(Book::find()->all(), 'bookId', 'bookName');
             'format' => 'yyyy/mm/dd'
         ]
     ]);?>
-    
+
         <?= $form->field($model, 'returnDate')->widget(DatePicker::classname(), [
         'options' => ['placeholder' => ''],
         'pluginOptions' => [
@@ -36,8 +36,8 @@ $books = ArrayHelper::map(Book::find()->all(), 'bookId', 'bookName');
             'format' => 'yyyy/mm/dd'
         ]
     ]);?>
-    
-    
+
+
         <div class="form-group">
             <?= Html::submitButton('Submit', ['class' => 'btn btn-primary']) ?>
         </div>
