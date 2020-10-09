@@ -1,7 +1,10 @@
 <?php
 
 use yii\helpers\Html;
+use common\components\Notification;
 
+
+Notification::notify(Notification::KEY_NEW_MESSAGE, $recipient_id, $message->id);
 /* @var $this yii\web\View */
 /* @var $model frontend\models\Borrowedbook */
 

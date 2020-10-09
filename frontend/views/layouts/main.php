@@ -8,7 +8,7 @@ use frontend\assets\AppAsset;
 
 if (Yii::$app->controller->action->id === 'login' || Yii::$app->controller->action->id === 'request-password-reset' || Yii::$app->controller->action->id === 'signup') {
 /**
- * Do not use this code in your template. Remove it. 
+ * Do not use this code in your template. Remove it.
  * Instead, use the code  $this->layout = '//main-login'; in your controller.
  */
     echo $this->render(
@@ -25,7 +25,7 @@ if (Yii::$app->controller->action->id === 'login' || Yii::$app->controller->acti
 
     dmstr\web\AdminLteAsset::register($this);
     AppAsset::register($this);
-   
+
     $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@vendor/almasaeed2010/adminlte/dist');
     ?>
     <?php $this->beginPage() ?>
