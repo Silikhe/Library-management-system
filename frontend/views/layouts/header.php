@@ -1,9 +1,25 @@
 <?php
 use yii\helpers\Html;
+use machour\yii2\notifications\widgets\NotificationsWidget;
+// use common\components\Notification;
 
 /* @var $this \yii\web\View */
 /* @var $content string */
+NotificationsWidget::widget([
+    'theme' => NotificationsWidget::THEME_GROWL,
+    'clientOptions' => [
+        'location' => 'br',
+    ],
+    'counters' => [
+        '.notifications-header-count',
+        '.notifications-icon-count'
+    ],
+    'markAllSeenSelector' => '#notification-seen-all',
+    'listSelector' => '#notifications',
+]);
+
 ?>
+
 
 <header class="main-header">
 
@@ -102,47 +118,20 @@ use yii\helpers\Html;
                     </ul>
                 </li>
                 <li class="dropdown notifications-menu">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <i class="fa fa-bell-o"></i>
-                        <span class="label label-warning">10</span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li class="header">You have 10 notifications</li>
-                        <li>
-                            <!-- inner menu: contains the actual data -->
-                            <ul class="menu">
-                                <li>
-                                    <a href="#">
-                                        <i class="fa fa-users text-aqua"></i> 5 new members joined today
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i class="fa fa-warning text-yellow"></i> Very long description here that may
-                                        not fit into the page and may cause design problems
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i class="fa fa-users text-red"></i> 5 new members joined
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a href="#">
-                                        <i class="fa fa-shopping-cart text-green"></i> 25 sales made
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i class="fa fa-user text-red"></i> You changed your username
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="footer"><a href="#">View all</a></li>
-                    </ul>
-                </li>
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        <i class="fa fa-bell-o"></i>
+        <span class="label label-warning notifications-icon-count">0</span>
+    </a>
+    <ul class="dropdown-menu">
+        <li class="header">You have <span class="notifications-header-count">0</span> notifications</li>
+        <li>
+            <ul class="menu">
+                <div id="notifications"></div>
+            </ul>
+        </li>
+        <li class="footer"><a href="#">View all</a> / <a href="#" id="notification-seen-all">Mark all as seen</a></li>
+    </ul>
+</li>
                 <!-- Tasks: style can be found in dropdown.less -->
                 <li class="dropdown tasks-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">

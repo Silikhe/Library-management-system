@@ -4,6 +4,7 @@ namespace common\components;
 use Yii;
 use yii\helpers\ArrayHelper;
 use frontend\models\Book;
+use frontend\models\User;
 use frontend\models\Student;
 use machour\yii2\notifications\models\Notification as BaseNotification;
 
@@ -60,13 +61,14 @@ class Notification extends BaseNotification
     {
         switch ($this->key) {
             case self::KEY_MEETING_REMINDER:
-                $meeting = Meeting::findOne($this->key_id);
+                // $meeting = Student::findOne($this->key_id);
+                $users = ArrayHelper::map(User::find()->all(), 'id', 'username');
                 return Yii::t('app', 'You are meeting with {customer}', [
-                    'customer' => $meeting->customer->name
+                    'customer' => $users->id->name
                 ]);
 
             case self::KEY_NEW_MESSAGE:
-                $message = Message::findOne($this->key_id);
+                $message = Book::findOne($this->key_id);
                 return Yii::t('app', '{customer} sent you a message', [
                     'customer' => $message->customer->name
                 ]);
