@@ -278,7 +278,7 @@
                                                 'value' => function ($dataProvider) {
                                                 $bookStatus = Book::find()->where(['bookId'=>$dataProvider->bookId])->One();
                                                 if( $bookStatus->status == 2){
-                                                  return Html::a('Approve', ['approvebook','id'=>$dataProvider->bookId,'studentId'=>$dataProvider->studentId], ['class' => 'btn btn-success']);                                                }
+                                                  return Html::a('Approve', ['approvebook','id'=>$dataProvider->bookId,'studentId'=>$dataProvider->studentId], ['class' => 'btn btn-success']);                                                 }
                                                 return '';
                                                 },
 
@@ -383,7 +383,7 @@
   <?php
         Modal::begin([
               'header'=>'<h4>Borrow Book</h4>',
-              'id'=>'borrowbook',
+              'id'=>'borrowedbook',
               'size'=>'modal-lg'
               ]);
           echo "<div id='borrowbookContent'></div>";

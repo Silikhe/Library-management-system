@@ -12,7 +12,7 @@ use kartik\date\DatePicker;
 $sudents = ArrayHelper::map(Student::find()->all(), 'studentsId', 'fullName');
 $books = ArrayHelper::map(Book::find()->where(['status'=>0])->all(), 'bookId', 'bookName');
 ?>
-<div class="borrowed-book-form">
+<div class="borrowedbook">
     <?php $form = ActiveForm::begin(['id' => 'borrowedbook']); ?>
 
      <?= $form->field($model, 'borrowDate')->hiddenInput(['value'=>date('yy/m/d')])->label(false) ?>

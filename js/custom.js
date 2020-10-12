@@ -88,7 +88,7 @@ $.get('returnbook',function(data) {
 
 });
 
-	$('.borrowbook').click(function(e){
+	$('.borrowedbook').click(function(e){
 		e.preventDefault();
 		var borrow =1;
    $.get('create?borrow='+borrow,function(data){

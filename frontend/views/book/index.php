@@ -127,7 +127,7 @@ $this->params['breadcrumbs'][] = $this->title;
                               }elseif ($bookStatus->status == 2){
                                 $btn = 'none';
                               }
-                          return '<span  style="display:'.$btn.'" class="btn btn-warning borrowbook">Borrow</span>';
+                          return '<span  style="display:'.$btn.'" class="btn btn-warning borrowedbook">Borrow</span>';
                           },
                           ],
                         [
@@ -160,7 +160,7 @@ $this->params['breadcrumbs'][] = $this->title;
    <?php
         Modal::begin([
               'header'=>'<h4>Borrow Book</h4>',
-              'id'=>'borrowbook',
+              'id'=>'borrowedbook',
               'size'=>'modal-lg'
               ]);
           echo "<div id='borrowbookContent'></div>";
