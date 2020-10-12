@@ -244,7 +244,14 @@
                                           'label'=>'Return',
                                           'format' => 'raw',
                                           'value' => function ($dataProvider) {
-                                          return '<span val="'.$dataProvider->bbId.'" class="btn btn-danger returnbook">Return</span>';
+                                            $bookStatus = Book::find()->where(['bookId'=>$dataProvider->bookId])->One();
+                                            if($bookStatus->status == 2){
+
+                                                $display = 'none';
+                                           return '<span val="'.$dataProvider->bbId.' "style="display:'.$display.'" " class="btn btn-danger returnbook">Return</span>';
+
+                                            }
+                                          return "";
                                           },
                                           ],
                                           [
@@ -270,9 +277,8 @@
                                                 'format' => 'raw',
                                                 'value' => function ($dataProvider) {
                                                 $bookStatus = Book::find()->where(['bookId'=>$dataProvider->bookId])->One();
-                                                if(\Yii::$app->user->can('Librarian') && $bookStatus->status == 2){
-                                                    return Html::a('Approve', ['approve','id'=>$dataProvider->bookId], ['class' => 'btn btn-success']);
-                                                }
+                                                if( $bookStatus->status == 2){
+                                                  return Html::a('Approve', ['approvebook','id'=>$dataProvider->bookId,'studentId'=>$dataProvider->studentId], ['class' => 'btn btn-success']);                                                }
                                                 return '';
                                                 },
 
@@ -326,7 +332,11 @@
                                           'label'=>'Return',
                                           'format' => 'raw',
                                           'value' => function ($dataProvider) {
-                                          return '<span val="'.$dataProvider->bbId.'" class="btn btn-danger returnbook">Return</span>';
+                                            $bookStatus = Book::find()->where(['bookId'=>$dataProvider->bookId])->One();
+                                            if($bookStatus->status == 2){
+                                                $display = 'none';
+                                            }
+                                          return '<span val="'.$dataProvider->bbId.'"  class="btn btn-danger returnbook">Return</span>';
                                           },
                                           ],
                                           [
@@ -340,9 +350,11 @@
                                               }elseif ($bookStatus->status == 1){
                                                 $btn = 'info';
                                                   $status = 'Issued';
+                                                  $display = 'none';
                                               }elseif ($bookStatus->status == 2){
                                                 $btn = 'warning';
                                                   $status = 'Pending';
+                                                  $display = 'none';
                                               }
                                               return '<span class="btn btn-'.$btn.'">'.$status.'</span>';
                                               },
@@ -385,6 +397,17 @@
               'size'=>'modal-lg'
               ]);
           echo "<div id='returnbookContent'></div>";
+          Modal::end();
+        ?>
+
+
+  <?php
+        Modal::begin([
+              'header'=>'<h4>Approve Book</h4>',
+              'id'=>'approvebook',
+              'size'=>'modal-sm'
+              ]);
+          echo "<div id='approvebookContent'></div>";
           Modal::end();
         ?>
 

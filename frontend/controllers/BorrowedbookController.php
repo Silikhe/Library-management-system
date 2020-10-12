@@ -138,17 +138,18 @@ public function actionReturnbook($id)
         ]);
 }
 
-public function actionApprove($id,$studentId){
+public function actionApprovebook($id,$studentId){
     $command = \Yii::$app->db->createCommand('UPDATE book SET status=1 WHERE bookId='.$id);
     $command->execute();
     $this->createNotification($studentId,$id);
     return $this->redirect(['index']);
 }
+
 public function createNotification($studentId,$bookId){
     $book = Book::find()->where(['bookId'=>$bookId])->one();
     $icon= 'fa fa-book';
-    $userId = Student::find()->where(['studentsId'=>$studentId])->one();
-    \Yii::$app->db->createCommand()->insert('notifications', [
+    $userId = Student::find()->where(['studentId'=>$studentId])->one();
+    \Yii::$app->db->createCommand()->insert('notification', [
         'icon' => $icon,
         'userId' => $userId->userId,
         'message'=> 'Your request for book '.$book->bookName.' has been approved.'

@@ -76,6 +76,18 @@ $.get('returnbook',function(data) {
 	});
 	});
 
+
+	$('.approvebook').click(function(e){
+		e.preventDefault();
+		var id = $(this).attr("val");
+	   $.get('approvebook?id='+id,function(data){
+			$('#approvebook').modal('show')
+				 .find('#approvebookContent')
+				 .html(data);
+	});
+
+});
+
 	$('.borrowbook').click(function(e){
 		e.preventDefault();
 		var borrow =1;
