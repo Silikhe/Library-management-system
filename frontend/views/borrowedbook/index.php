@@ -18,6 +18,14 @@
   $totalStudents = Student::find()->asArray()->all();
   $overdue = Borrowedbook::find()->where('expectedReturn > '.date('yy/m/d'))->andWhere(['actualReturnDate'=>NULL])->asArray()->all();
   $borrowStudents = Borrowedbook::find()->asArray()->all();
+
+//   if(\Yii::$app->user->can('Student')){
+//     $studentId = Student::find()->where(['userId'=>\yii::$app->user->id])->one();
+//     $bb = BorrowedBook::find()->Where(['studentId'=>$studentId->studentsId])->asArray()->all();
+// }
+// if(\Yii::$app->user->can('Librarian')){
+//     $bb = BorrowedBook::find()->asArray()->all();
+// }
   ?>
   <div class="row">
           <div class="col-md-3 col-sm-6 col-xs-12">
@@ -176,13 +184,16 @@
                                               'value' => function ($dataProvider) {
                                               $bookStatus = Book::find()->where(['bookId'=>$dataProvider->bookId])->One();
                                               if($bookStatus->status == 0){
+                                                $btn = 'success';
                                                   $status = 'Available';
                                               }elseif ($bookStatus->status == 1){
+                                                $btn = 'Info';
                                                   $status = 'Issued';
                                               }elseif ($bookStatus->status == 2){
+                                                $btn = 'warning';
                                                   $status = 'Pending';
                                               }
-                                              return '<span class="btn btn-info">'.$status.'</span>';
+                                              return '<span class="btn btn-'.$btn.'">'.$status.'</span>';
                                               },
                                               ],
                                               ['class' => 'yii\grid\ActionColumn'],
@@ -254,9 +265,22 @@
                                               return '<span class="btn btn-'.$btn.'">'.$status.'</span>';
                                               },
                                               ],
+                                              [
+                                                'label'=>'Approve Books',
+                                                'format' => 'raw',
+                                                'value' => function ($dataProvider) {
+                                                $bookStatus = Book::find()->where(['bookId'=>$dataProvider->bookId])->One();
+                                                if(\Yii::$app->user->can('Librarian') && $bookStatus->status == 2){
+                                                    return Html::a('Approve', ['approve','id'=>$dataProvider->bookId], ['class' => 'btn btn-success']);
+                                                }
+                                                return '';
+                                                },
+
+                                             ],
                                               ['class' => 'yii\grid\ActionColumn'],
                                               ],
                                               ]); ?>
+
   <?php }?>
   <?php if (Yii::$app->user->can('Student')){?>
               <?= GridView::widget([
@@ -320,10 +344,10 @@
                                                 $btn = 'warning';
                                                   $status = 'Pending';
                                               }
-                                              return '<span class="btn btn-info">'.$status.'</span>';
+                                              return '<span class="btn btn-'.$btn.'">'.$status.'</span>';
                                               },
                                               ],
-                                              ['class' => 'yii\grid\ActionColumn'],
+                                              // ['class' => 'yii\grid\ActionColumn'],
                                               ],
                                               ]); ?>
   <?php }?>

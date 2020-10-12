@@ -83,10 +83,11 @@ $this->params['breadcrumbs'][] = $this->title;
                               $status = 'Available';
                           }elseif ($bookStatus->status == 1){
                             $btn = 'info';
-                              $status = 'Issued';
+                            $status = 'Issued';
                           }elseif ($bookStatus->status == 2){
-                            $btn = 'warning';
+                              $btn = 'warning';
                               $status = 'Pending';
+                              return '<span class="btn btn-'.$btn.' approvebtn">'.$status.'</span>';
                           }
                           return '<span class="btn btn-'.$btn.'">'.$status.'</span>';
                           },
@@ -137,6 +138,7 @@ $this->params['breadcrumbs'][] = $this->title;
                           if($bookStatus->status == 0){
                             $btn = 'success';
                               $status = 'Available';
+                              return '<span class=" approvebtn btn btn-'.$btn.' ">'.$status.'</span>';
                           }elseif ($bookStatus->status == 1){
                             $btn = 'info';
                               $status = 'Issued';
@@ -162,5 +164,16 @@ $this->params['breadcrumbs'][] = $this->title;
               'size'=>'modal-lg'
               ]);
           echo "<div id='borrowbookContent'></div>";
+          Modal::end();
+        ?>
+
+
+<?php
+        Modal::begin([
+              'header'=>'<h4>Approve Book</h4>',
+              'id'=>'approvebook',
+              'size'=>'modal-sm'
+              ]);
+          echo "<div id='approvebookContent'></div>";
           Modal::end();
         ?>

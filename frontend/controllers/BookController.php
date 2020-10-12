@@ -8,6 +8,7 @@ use frontend\models\Book;
 use frontend\models\BookSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use frontend\models\BorrowedbookSearch;
 use yii\filters\VerbFilter;
 use yii\web\ForbiddenHttpException;
 
@@ -107,6 +108,47 @@ class BookController extends Controller
         // }
     }
 
+    public function actionBorrowedbook()
+{
+    $model = new \frontend\models\Borrowedbook();
+    $searchModel = new BorrowedbookSearch();
+    $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+    if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->validate()) {
+            // form inputs are valid, do something here
+            return $this ->redirect ('index');
+        }
+    }
+
+    return $this->renderAjax('borrowedbook', [
+        'model' => $model,
+        'dataProvider' => $dataProvider,
+    ]);
+}
+
+
+
+public function actionApprove()
+{
+    $model = new \frontend\models\Book();
+    $searchModel = new BorrowedbookSearch();
+    $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+    if ($model->load(Yii::$app->request->post())) {
+        if ($model->validate()) {
+            // form inputs are valid, do something here
+            return $this ->redirect ('index');
+        }
+    }
+
+    return $this->renderAjax('approve', [
+        'model' => $model,
+        'dataProvider' => $dataProvider,
+
+    ]);
+}
+
+
     public function actionAddauthor()
     {
         $model = new \frontend\models\Author();
@@ -163,6 +205,11 @@ class BookController extends Controller
         return $this->redirect(['index']);
     }
 
+    public function updateAfterDelete($bookId){
+        $command = \Yii::$app->db->createCommand('UPDATE book SET status=0 WHERE bookId='.$bookId);
+        $command->execute();
+        return true;
+    }
     /**
      * Finds the Book model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

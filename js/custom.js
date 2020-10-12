@@ -50,16 +50,19 @@ $('#borrowbook').modal('show')
 });
 });
 
-// $('.requestbook').click(function(e){
-// 	e.preventDefault();
-// 	var id = $(this).attr("val");
-// 	$.get('requestbook?id='+id,function(data){
-// 	$('#requestbook').modal('show')
-// 	.find('#borrowbookContent')
-// 	.html(data);
-//   });
-// });
 
+
+$('.approvebtn').click(function(e){
+	e.preventDefault();
+
+$.get('approvebook',function(data) {
+	$('#approvebook').modal('show')
+			 .find('#approvebookContent')
+
+		.html(data)
+
+	});
+	});
 
 $('.returnbook').click(function(e){
 	e.preventDefault();
@@ -73,7 +76,15 @@ $.get('returnbook',function(data) {
 	});
 	});
 
-
+	$('.borrowbook').click(function(e){
+		e.preventDefault();
+		var borrow =1;
+   $.get('create?borrow='+borrow,function(data){
+		$('#assignbook').modal('show')
+			 .find('#assignbookContent')
+			 .html(data);
+	});
+});
 
 
 });

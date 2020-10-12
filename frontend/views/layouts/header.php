@@ -1,22 +1,33 @@
 <?php
+// use Yii;
 use yii\helpers\Html;
-use machour\yii2\notifications\widgets\NotificationsWidget;
+use frontend\models\Book;
+use frontend\models\Student;
+use yii\helpers\ArrayHelper;
+use frontend\models\Notification;
+use frontend\models\Borrowedbook;
+// use machour\yii2\notifications\widgets\NotificationsWidget;
 // use common\components\Notification;
 
 /* @var $this \yii\web\View */
 /* @var $content string */
-NotificationsWidget::widget([
-    'theme' => NotificationsWidget::THEME_GROWL,
-    'clientOptions' => [
-        'location' => 'br',
-    ],
-    'counters' => [
-        '.notifications-header-count',
-        '.notifications-icon-count'
-    ],
-    'markAllSeenSelector' => '#notification-seen-all',
-    'listSelector' => '#notifications',
-]);
+// NotificationsWidget::widget([
+//     'theme' => NotificationsWidget::THEME_GROWL,
+//     'clientOptions' => [
+//         'location' => 'br',
+//     ],
+//     'counters' => [
+//         '.notifications-header-count',
+//         '.notifications-icon-count'
+//     ],
+//     'markAllSeenSelector' => '#notification-seen-all',
+//     'listSelector' => '#notifications',
+// ]);
+// $borrowStudents = Borrowedbook::find()->asArray()->all();
+$totalBorrows = Borrowedbook::find()->where(['actualReturnDate'=>NULL])->asArray()->all();
+$students = ArrayHelper::map(Student::find()->all(), 'studentId', 'fullName');
+$books = ArrayHelper::map(Book::find()->all(), 'bookId', 'bookName');
+
 
 ?>
 
@@ -117,21 +128,31 @@ NotificationsWidget::widget([
                         <li class="footer"><a href="#">See All Messages</a></li>
                     </ul>
                 </li>
+                <?php
+                    $notifications = Notification::find()->where(['userId'=>Yii::$app->user->id])->all();
+                ?>
                 <li class="dropdown notifications-menu">
-    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-        <i class="fa fa-bell-o"></i>
-        <span class="label label-warning notifications-icon-count">0</span>
-    </a>
-    <ul class="dropdown-menu">
-        <li class="header">You have <span class="notifications-header-count">0</span> notifications</li>
-        <li>
-            <ul class="menu">
-                <div id="notifications"></div>
-            </ul>
-        </li>
-        <li class="footer"><a href="#">View all</a> / <a href="#" id="notification-seen-all">Mark all as seen</a></li>
-    </ul>
-</li>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-bell-o"></i>
+                        <span class="label label-warning"><?= count($notifications)?></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="header">You have <?= count($notifications)?> notifications</li>
+                        <li>
+                            <!-- inner menu: contains the actual data -->
+                            <ul class="menu">
+                            <?php foreach ($notifications as $notification) { ?>
+                                <li>
+                                    <a href="#">
+                                        <i class="<?= $notification->icon ?>"></i> <?=$notification->message?>
+                                    </a>
+                                </li>
+                           <?php }?>
+                            </ul>
+                        </li>
+                        <li class="footer"><a href="#">View all</a></li>
+                    </ul>
+                </li>
                 <!-- Tasks: style can be found in dropdown.less -->
                 <li class="dropdown tasks-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
