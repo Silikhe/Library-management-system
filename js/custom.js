@@ -38,12 +38,13 @@ var id = $(this).attr('val');
 });
 });
 
-$('.borrowbook').click(function(e){
+$('.borrowedbook').click(function(e){
 	e.preventDefault();
-
-$.get('borrowedbook',function(data) {
-$('#borrowbook').modal('show')
-		 .find('#borrowbookContent')
+	var id = $(this).attr('val');
+// alert(id);
+$.get('borrowedbook?id='+id,function(data) {
+$('#borrowedbook').modal('show')
+		 .find('#borrowedbookContent')
 
 	.html(data)
 
@@ -88,14 +89,14 @@ $.get('returnbook',function(data) {
 
 });
 
-	$('.borrowedbook').click(function(e){
-		e.preventDefault();
-		var borrow =1;
-   $.get('create?borrow='+borrow,function(data){
-		$('#assignbook').modal('show')
-			 .find('#assignbookContent')
+$('.borrowbook').click(function(e){
+	e.preventDefault();
+	var id = $(this).attr("val");
+   $.get('borrowbook?id='+id,function(data){
+		$('#borrowbook').modal('show')
+			 .find('#borrowbookContent')
 			 .html(data);
-	});
+});
 });
 
 

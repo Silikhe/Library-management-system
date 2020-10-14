@@ -80,7 +80,7 @@ class BorrowedbookController extends Controller
     }
 
     public function bookUpdate($bookId){ // this function is used to join and update the grid to current borrowed//
-        $command = \Yii::$app->db->createCommand('UPDATE book SET status=2 WHERE bookId='.$bookId);
+        $command = \Yii::$app->db->createCommand('UPDATE book SET status= 2 WHERE bookId='.$bookId);
         $command->execute();
         return true;
     }
@@ -113,13 +113,12 @@ class BorrowedbookController extends Controller
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
         if ($model->validate()) {
             // form inputs are valid, do something here
-            return $this ->redirect ('index');
+            return $this ->redirect (['index']);
         }
     }
 
     return $this->renderAjax('borrowedbook', [
         'model' => $model,
-        'dataProvider' => $dataProvider,
     ]);
 }
 

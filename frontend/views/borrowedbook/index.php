@@ -95,7 +95,7 @@
               <?php }?>
               <?php if (Yii::$app->user->can('Student')){?>
             <div style="padding-top: 20px;">
-              <button type="button" class="btn btn-block btn-success btn-lg borrowbook" style="width: 300px;"><i class="fa fa-plus" aria-hidden="true"></i> Borrow Book</button>
+              <button type="button" class="btn btn-block btn-success btn-lg borrowedbook" style="width: 300px;"><i class="fa fa-plus" aria-hidden="true"></i> Borrow Book</button>
               </div>
               <?php }?>
               <?php if (Yii::$app->user->can('Admin')){?>
@@ -333,10 +333,12 @@
                                           'format' => 'raw',
                                           'value' => function ($dataProvider) {
                                             $bookStatus = Book::find()->where(['bookId'=>$dataProvider->bookId])->One();
-                                            if($bookStatus->status == 2){
-                                                $display = 'none';
+                                            if($bookStatus->status == 1){
+                                                $display = 'block';
+                                                return '<span val="'.$dataProvider->bbId.'"  class="btn btn-danger returnbook">Return</span>';
+
                                             }
-                                          return '<span val="'.$dataProvider->bbId.'"  class="btn btn-danger returnbook">Return</span>';
+                                          return "";
                                           },
                                           ],
                                           [
@@ -347,16 +349,22 @@
                                               if($bookStatus->status == 0){
                                                 $btn = 'success';
                                                   $status = 'Available';
+                                                  return '<span class="btn btn-'.$btn.'">'.$status.'</span>';
+
                                               }elseif ($bookStatus->status == 1){
                                                 $btn = 'info';
                                                   $status = 'Issued';
                                                   $display = 'none';
+                                                  return '<span class="btn btn-'.$btn.'">'.$status.'</span>';
+
                                               }elseif ($bookStatus->status == 2){
                                                 $btn = 'warning';
                                                   $status = 'Pending';
                                                   $display = 'none';
+                                                  return '<span class="btn btn-'.$btn.'">'.$status.'</span>';
+
                                               }
-                                              return '<span class="btn btn-'.$btn.'">'.$status.'</span>';
+                                              return "";
                                               },
                                               ],
                                               // ['class' => 'yii\grid\ActionColumn'],
@@ -386,7 +394,7 @@
               'id'=>'borrowedbook',
               'size'=>'modal-lg'
               ]);
-          echo "<div id='borrowbookContent'></div>";
+          echo "<div id='borrowedbookContent'></div>";
           Modal::end();
         ?>
 

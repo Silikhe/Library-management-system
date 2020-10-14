@@ -83,7 +83,6 @@ $this->params['breadcrumbs'][] = $this->title;
                               $status = 'Available';
                           }elseif ($bookStatus->status == 1){
                             $btn = 'info';
-                            $status = 'Issued';
                           }elseif ($bookStatus->status == 2){
                               $btn = 'warning';
                               $status = 'Pending';
@@ -122,15 +121,16 @@ $this->params['breadcrumbs'][] = $this->title;
                               $bookStatus = Book::find()->where(['bookId'=>$dataProvider->bookId])->One();
                               if($bookStatus->status == 0){
                                 $btn = 'block';
+
                               }elseif ($bookStatus->status == 1){
                                 $btn = 'none';
                               }elseif ($bookStatus->status == 2){
                                 $btn = 'none';
                               }
-                          return '<span  style="display:'.$btn.'" class="btn btn-warning borrowedbook">Borrow</span>';
+                          return '<span  style="display:'.$btn.'" class="btn btn-warning borrowbook">Borrow</span>';
                           },
                           ],
-                        [
+                       [
                           'label'=>'Status',
                           'format' => 'raw',
                           'value' => function ($dataProvider) {
@@ -142,11 +142,13 @@ $this->params['breadcrumbs'][] = $this->title;
                           }elseif ($bookStatus->status == 1){
                             $btn = 'info';
                               $status = 'Issued';
+                              return '<span class=" approvebtn btn btn-'.$btn.' ">'.$status.'</span>';
                           }elseif ($bookStatus->status == 2){
                             $btn = 'warning';
                               $status = 'Pending';
+                              return '<span class=" approvebtn btn btn-'.$btn.' ">'.$status.'</span>';
                           }
-                          return '<span class="btn btn-'.$btn.'">'.$status.'</span>';
+                          return'';
                           },
                           ],
 
@@ -159,21 +161,22 @@ $this->params['breadcrumbs'][] = $this->title;
    <?php }?>
    <?php
         Modal::begin([
-              'header'=>'<h4>Borrow Book</h4>',
-              'id'=>'borrowedbook',
-              'size'=>'modal-lg'
-              ]);
-          echo "<div id='borrowbookContent'></div>";
-          Modal::end();
-        ?>
+            'header'=>'<h4>Borrow Book</h4>',
+            'id'=>'borrowbook',
+            'size'=>'modal-md'
+            ]);
+        echo "<div id='borrowbookContent'></div>";
+        Modal::end();
+      ?>
 
 
 <?php
         Modal::begin([
               'header'=>'<h4>Approve Book</h4>',
               'id'=>'approvebook',
-              'size'=>'modal-sm'
+              'size'=>'modal-md'
               ]);
           echo "<div id='approvebookContent'></div>";
           Modal::end();
         ?>
+

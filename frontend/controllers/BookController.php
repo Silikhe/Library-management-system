@@ -2,7 +2,7 @@
 
 namespace frontend\controllers;
 use frontend\models\Bookauthor;
-
+use frontend\models\Borrowedbook;
 use Yii;
 use frontend\models\Book;
 use frontend\models\BookSearch;
@@ -129,24 +129,41 @@ class BookController extends Controller
 
 
 
-    public function actionBorrowedbook()
-{
-    $model = new \frontend\models\Borrowedbook();
-    $searchModel = new BorrowedbookSearch();
+//     public function actionBorrowbook()
+// {
+//     $model = new \frontend\models\Borrowedbook();
+//     $searchModel = new BorrowedbookSearch();
+//     $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+//     if ($model->load(Yii::$app->request->post()) && $model->save()) {
+//         if ($model->validate()) {
+//             // form inputs are valid, do something here
+//             return $this ->redirect ('index');
+//         }
+//     }
+
+//     return $this->renderAjax('borrowedbook', [
+//         'model' => $model,
+//         'dataProvider' => $dataProvider,
+//     ]);
+// }
+
+public function actionBorrowbook()
+    {
+        $model = new Borrowedbook();
+        $searchModel = new BorrowedbookSearch();
     $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-    if ($model->load(Yii::$app->request->post()) && $model->save()) {
-        if ($model->validate()) {
-            // form inputs are valid, do something here
-            return $this ->redirect ('index');
+      
+        if ($model->load(Yii::$app->request->post())&& $model->save()) {
+            if ($model->validate()) {
+                // form inputs are valid, do something here
+                return $this ->redirect ('index');
+            }
         }
+        return $this->renderAjax('borrowbook', [
+            'model' => $model,
+            // 'dataProvider' => $dataProvider,
+        ]);
     }
-
-    return $this->renderAjax('borrowedbook', [
-        'model' => $model,
-        'dataProvider' => $dataProvider,
-    ]);
-}
-
 
 
 public function actionApprove()
